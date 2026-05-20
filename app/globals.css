@@ -30,3 +30,18 @@ h1, h2, h3, h4, h5, h6 {
 a[href^="#"] {
   text-decoration: none;
 }
+
+/* Failsafe: Ensure all elements become visible within 1 second */
+@keyframes ensureVisible {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Apply to any element that might be hidden */
+*[style*="opacity:0"] {
+  animation: ensureVisible 0.8s ease-out 0.5s forwards !important;
+}

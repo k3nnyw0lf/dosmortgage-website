@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
@@ -9,40 +9,41 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
+      duration: 0.2,
       staggerChildren: 0.15,
       delayChildren: 0.1,
     },
   },
-};
+} as const;
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { y: 24, opacity: 0 },
   visible: {
-    opacity: 1,
     y: 0,
+    opacity: 1,
     transition: {
       duration: 0.8,
-      ease: [0.25, 0.46, 0.45, 0.94],
     },
   },
-};
+} as const;
 
 const scaleVariants = {
-  hidden: { opacity: 0, scale: 0.95 },
+  hidden: { scale: 0.95, opacity: 0 },
   visible: {
-    opacity: 1,
     scale: 1,
+    opacity: 1,
     transition: {
       duration: 0.8,
-      ease: [0.25, 0.46, 0.45, 0.94],
     },
   },
-};
+} as const;
 
 export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
@@ -54,8 +55,8 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-blue-50 to-neutral-50 overflow-hidden">
       {/* Navigation */}
       <motion.nav
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ y: -20 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
         className={`fixed top-0 w-full z-50 backdrop-blur-sm transition-all duration-300 ${
           isScrolled
@@ -89,28 +90,31 @@ export default function Home() {
         <div className="absolute top-20 right-0 w-96 h-96 bg-accent-300/20 rounded-full blur-3xl -z-10" />
         <div className="absolute bottom-0 left-10 w-80 h-80 bg-primary-400/10 rounded-full blur-3xl -z-10" />
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="max-w-5xl mx-auto text-center z-10"
-        >
+        {mounted && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            animate={false}
+            className="max-w-5xl mx-auto text-center z-10"
+          >
           <motion.h1
-            variants={itemVariants}
+            initial={{ y: 0, opacity: 1 }}
+            animate={false}
             className="font-display text-6xl md:text-7xl font-bold text-primary-950 leading-tight mb-6"
           >
             Premium Mortgage Solutions for Real Estate Professionals
           </motion.h1>
 
           <motion.p
-            variants={itemVariants}
+            initial={{ y: 0, opacity: 1 }}
+            animate={false}
             className="font-body text-xl text-neutral-600 mb-8 max-w-2xl mx-auto leading-relaxed"
           >
             Expert lending tailored for investors and professionals. Fast approvals, competitive rates, and personalized service.
           </motion.p>
 
           <motion.div
-            variants={itemVariants}
+            initial={{ y: 0, opacity: 1 }}
+            animate={false}
             className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
           >
             <motion.button
@@ -130,7 +134,8 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            variants={scaleVariants}
+            initial={{ scale: 1, opacity: 1 }}
+            animate={false}
             className="relative w-full max-w-3xl mx-auto"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-primary-400/0 via-primary-400/20 to-primary-400/0 rounded-3xl blur-2xl" />
@@ -152,6 +157,7 @@ export default function Home() {
             </div>
           </motion.div>
         </motion.div>
+        )}
       </section>
 
       {/* Solutions Section */}
